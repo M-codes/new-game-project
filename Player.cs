@@ -1,10 +1,11 @@
-using System;
 using Godot;
-[Signal]
-public delegate void HitEventHandler();
 
 public partial class Player : Area2D
-{
+
+{// Don't forget to rebuild the project so the editor knows about the new signal.
+
+[Signal]
+public delegate void HitEventHandler();
 	[Export]
 	public int Speed { get; set; } = 400; // How fast the player will move (pixels/sec).
 
@@ -13,6 +14,7 @@ public partial class Player : Area2D
 	public override void _Ready()
 	{
 		ScreenSize = GetViewportRect().Size;
+		//Hide();
 	}
 
 	public override void _Process(double delta)
@@ -55,7 +57,6 @@ public partial class Player : Area2D
 			x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
 			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
 		);
-
 		if (velocity.X != 0)
 		{
 			animatedSprite2D.Animation = "walk";
@@ -68,13 +69,19 @@ public partial class Player : Area2D
 			animatedSprite2D.Animation = "up";
 			animatedSprite2D.FlipV = velocity.Y > 0;
 		}
-		if (velocity.X < 0)
-{
-    animatedSprite2D.FlipH = true;
-}
-else
-{
-    animatedSprite2D.FlipH = false;
-}
 	}
+	// We also specified this function name in PascalCase in the editor's connection window.
+	private void OnBodyEntered(Node2D body)
+	{
+		Hide(); // Player disappears after being hit.
+		EmitSignal(SignalName.Hit);
+		// Must be deferred as we can't change physics properties on a physics callback.
+		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+	}
+public void Start(Vector2 position)
+{
+    Position = position;
+    Show();
+    GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+}
 }
