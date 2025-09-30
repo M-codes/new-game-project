@@ -2,8 +2,7 @@ using Godot;
 
 public partial class Main : Node
 {
-	// Don't forget to rebuild the project so the editor knows about the new export variable.
-
+	
 	[Export]
 	public PackedScene MobScene { get; set; }
 
@@ -37,15 +36,13 @@ public partial class Main : Node
 		var hud = GetNode<HUD>("HUD");
 		hud.UpdateScore(_score);
 		hud.ShowMessage("Get Ready!");
-		// Note that for calling Godot-provided methods with strings,
-		// we have to use the original Godot snake_case name.
+		
 		GetTree().CallGroup("mobs", Node.MethodName.QueueFree);
 		GetNode<AudioStreamPlayer>("Music").Play();
 
 	}
 
-	// We also specified this function name in PascalCase in the editor's connection window.
-	private void OnMobTimerTimeout()
+		private void OnMobTimerTimeout()
 	{
 		// Create a new instance of the Mob scene.
 		Mob mob = MobScene.Instantiate<Mob>();
@@ -72,13 +69,13 @@ public partial class Main : Node
 		AddChild(mob);
 	}
 
-	// We also specified this function name in PascalCase in the editor's connection window.
+	
 	private void OnScoreTimerTimeout()
 	{
 		_score++;
 	}
 
-	// We also specified this function name in PascalCase in the editor's connection window.
+	
 	private void OnStartTimerTimeout()
 	{
 		GetNode<Timer>("MobTimer").Start();

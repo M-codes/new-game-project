@@ -2,7 +2,7 @@ using Godot;
 
 public partial class Player : Area2D
 
-{// Don't forget to rebuild the project so the editor knows about the new signal.
+{
 
 [Signal]
 public delegate void HitEventHandler();
@@ -61,7 +61,7 @@ public delegate void HitEventHandler();
 		{
 			animatedSprite2D.Animation = "walk";
 			animatedSprite2D.FlipV = false;
-			// See the note below about the following boolean assignment.
+			
 			animatedSprite2D.FlipH = velocity.X < 0;
 		}
 		else if (velocity.Y != 0)
@@ -70,12 +70,12 @@ public delegate void HitEventHandler();
 			animatedSprite2D.FlipV = velocity.Y > 0;
 		}
 	}
-	// We also specified this function name in PascalCase in the editor's connection window.
+	
 	private void OnBodyEntered(Node2D body)
 	{
 		Hide(); // Player disappears after being hit.
 		EmitSignal(SignalName.Hit);
-		// Must be deferred as we can't change physics properties on a physics callback.
+		
 		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 	}
 public void Start(Vector2 position)
