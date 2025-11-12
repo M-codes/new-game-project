@@ -75,7 +75,6 @@ public delegate void HitEventHandler();
 	{
 		Hide(); // Player disappears after being hit.
 		EmitSignal(SignalName.Hit);
-		
 		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 	}
 public void Start(Vector2 position)
